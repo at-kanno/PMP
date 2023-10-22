@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head><meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+  <title>メンテナンス</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+{% if mode == 1 %}
+        <body bgcolor="#F8CBAD">
+{% else %}
+        <body bgcolor="#CCCCFF">
+{% endif %}
+
+    <center><h2><b><ul>
+{% if qid == 0 %}
+        演習問題管理（新規登録）
+{% else %}
+        演習問題管理（変更）
+{% endif %}
+    </ul></b></h2></center>
+    <!-- メニュー -->
+<center>
+    <div class="question" >
+        <form action="maintenance" method="POST">
+<table>
+    <tr><input type="hidden" name="user_id" value={{ user_id }} />
+    <td>問題番号</td><td>
+        <input type="number" name="qid" readonly="true" class="smallinput" value={{ qid }} ><br>
+    </td></tr><tr><td><center>領域</center></td><td>
+        <input type="number" name="category" value={{ category }} class="smallinput" />
+        カテゴリ
+        <input type="number" name="level" value={{ level }} class="smallinput" /><br>
+    </td></tr>
+    <tr><td><center>問題</center></td><td>
+        <textarea cols="40" width="500" name="question" >{{ question }}</textarea>
+    </td></tr>
+    <tr><td><center>正解</center></td><td>
+        <textarea cols="40" width="500" name="answer" >{{ answer }}</textarea>
+    </td></tr>
+    <tr><td>選択肢１</td><td>
+        <textarea cols="40" width="500" name="choice1" >{{ choice1 }}</textarea>
+    </td></tr>
+    <tr><td>選択肢２</td><td>
+        <textarea cols="40" width="500" name="choice2" >{{ choice2 }}</textarea>
+    </td></tr>
+    <tr><td>選択肢３</td><td>
+        <textarea cols="40" width="500" name="choice3" >{{ choice3 }}</textarea>
+    </td></tr><tr><td></td><td>
+{% if qid == 0 %}
+　       <input type="hidden" name="flag" value="1">
+{% else %}
+        解説の更新 <input type="checkbox" id="flag" name="flag" value="0" />
+{% endif %}
+        解説番号<input type="number" name="cid" size="5" value={{ cid }}  class="smallinput">
+    </td></tr>
+
+    <tr><td><center>解説</center></td><td>
+         <textarea cols="40" width="500" name="comments" >{{ comments }}</textarea>
+    </td></tr>
+　       <input type="hidden" name="command" value="confirm">
+    <td></td><td><input type="submit" width="140 " value="確認"></td>
+</table>
+        </form>
+    </div>
+
+    <div class="buttonwrap" style="display:inline-flex">
+{% if qid != 0 %}
+    <form action="mentenance" method="POST">
+        <input type="hidden" name="user_id" value={{ user_id }} />
+　       <input type="hidden" name="command" value="delete">
+        <input type="hidden" name="qid" value={{ qid }} >
+        <input type="hidden" name="category" value={{ category }} >
+        <input type="hidden" name="level" value={{ level }} >
+        <input type="hidden" name="cid" value={{ cid }} >
+        <input type="hidden" name="question" value={{ question }} >
+        <input type="hidden" name="answer" value={{ answer }} >
+        <input type="hidden" name="choice1" value={{ choice1 }} >
+        <input type="hidden" name="choice2" value={{ choice2 }} >
+        <input type="hidden" name="choice3" value={{ choice3 }} >
+        <input type="hidden" name="comments" value={{ comments }} >
+        <input type="submit" value="削除"
+               style="background:#f2f2f2;color:black;border:1">
+    </form>
+{% endif %}
+    <input type="submit" onclick="history.back()" value="番号入力へ戻る"
+           style="background:#f2f2f2;color:black;border:1"></input>
+
+    <form action="makeExam" method="POST">
+        <input type="hidden" name="user_id" value={{ user_id }} />
+        <input type="hidden" name="category" value="99">
+        <input type="submit" value="管理画面へ戻る"
+               style="background:#f2f2f2;color:black;border:1">
+    </form>
+
+</div>
+</center>
+</body></body>
+</html>

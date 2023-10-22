@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>問題解説</title>
+</head>
+
+<body>
+<!-- 受取情報
+ USER_ID = {{ user_id }}<br>
+ EXAM_ID = {{ exam_id }}<br>
+ STARTTIME = {{ stime }} <br>
+ ANSWERLIST = {{ answerlist }}<br>
+ AREALIST = {{ arealist }}<br>
+ CORRECTLIST = {{ correctlist }} <br>
+ NUM OF CORRECT = {{ correct }} <br>
+ RATE = {{ rate }}<br>
+ RERULTLIST = {{ resultlist }}<br>
+ RERULT = {{ result }}<br>
+-->
+<h3><b><ul>{{ title }}（問題解説）</ul></b></h3>
+実施日時：{{ stime }}<br>
+採点結果：{{ rate }}   正答率：{{ correct }} / {{ total }}  合否： {{ result }}
+<br><br>
+問題 {{ q_no }}  {{ q  | safe }} <br>
+A. {{ a1 }}<br>
+B. {{ a2 }}<br>
+C. {{ a3 }}<br>
+D. {{ a4 }}<br>
+<br>
+正解は 「{{ answer }}」です。
+<br><br>
+<font color="red">
+    {{ comment | safe }}</font>
+<br>
+<br>
+<div class="buttonwrap" style="display:inline-flex">
+<form action="summary" >
+        <input type="hidden" name="user_id" value={{ user_id }} />
+        <button type="submit" class="btn btn-primary btn-block" style="margin:10px" name="category" value="99">
+            メインメニューへ戻る</button><br></p>
+</form>
+
+    <form action="getback" >
+        <input type="hidden" name="user_id" value={{ user_id }} />
+        <input type="hidden" name="exam_id" value={{ exam_id }} />
+        <input type="hidden" name="test_id" value={{ test_id }} />
+        <button type="submit" class="btn btn-primary btn-block" style="margin:10px" name="category" value="99">
+            集計画面へ戻る</button><br></p>
+</form>
+
+    <button class="btn btn-primary btn-block" style="margin:10px" onclick="history.back()">
+        採点結果へ戻る</button>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>終了画面</title>
+</head>
+
+<body>
+
+<h3><b><ul>{{ title }}（終了）</ul></b></h3>
+
+<p>
+お疲れ様でした。
+<br><br>
+集計結果は次の通りです。
+    {% if flag == 1 %}
+        修了試験に挑戦できるようになりました。
+    {% endif %}
+
+</p>
+
+<table border="1" cellpadding="10" style="border-collapse:collapse;">
+
+<form action="summary2" method="POST">
+
+<tr><td>セクション</td><td align="center">消費時間</td>
+    <td align="center">出題数</td><td align="center">正解数</td><td align="center">正解率</td>
+    <td align="center">分析結果</td><td align="center">結果詳細</td></tr>
+<tr><td align="center">1</td><td align="right">{{ time1Str }}</td>
+    <td align="center">{{ total1 }}</td><td align="center">{{ score1 }}</td>
+    <td align="center">{{ '{:.2f}'.format(percentage1) }}%</td><td>
+    <input type="hidden" name="title" value={{ title }} />
+    <input type="hidden" name="user_id" value={{ user_id }} />
+    <input type="hidden" name="test_id" value={{ exam1 }} />
+    <input type="hidden" name="exam1" value={{ exam1 }} />
+    <input type="hidden" name="exam2" value={{ exam2 }} />
+    <input type="hidden" name="exam3" value={{ exam3 }} />
+    <input type="hidden" name="time1" value={{ time1 }} />
+    <input type="hidden" name="time2" value={{ time2 }} />
+    <input type="hidden" name="time3" value={{ time3 }} />
+    <input type="hidden" name="total1" value={{ total1 }} />
+    <input type="hidden" name="total2" value={{ total2 }} />
+    <input type="hidden" name="total3" value={{ total3 }} />
+    <input type="hidden" name="score1" value={{ score1 }} />
+    <input type="hidden" name="score2" value={{ score2 }} />
+    <input type="hidden" name="score3" value={{ score3 }} />
+    <input type="hidden" name="percentage1" value={{ percentage1 }} />
+    <input type="hidden" name="percentage2" value={{ percentage2 }} />
+    <input type="hidden" name="percentage3" value={{ percentage3 }} />
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="31">採点結果</button>
+</td><td>
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="51">分析結果</button>
+    </td></tr>
+
+<tr><td align="center">2</td><td align="right">{{ time2Str }}</td>
+    <td align="center">{{ total2 }}</td><td align="center">{{ score2 }}</td>
+    <td align="center">{{ '{:.2f}'.format(percentage2) }}%</td><td>
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="32">採点結果</button>
+</td><td>
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="52">分析結果</button>
+    </td></tr>
+
+<tr><td align="center">3</td><td align="right">{{ time3Str }}</td>
+    <td align="center">{{ total3 }}</td><td align="center">{{ score3 }}</td>
+    <td align="center">{{ '{:.2f}'.format(percentage3) }}%</td><td>
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="33">採点結果</button>
+</td><td>
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="53">分析結果</button>
+    </td></tr>
+
+<tr><td align="center">総合</td><td align="right">{{ timeTStr }}</td>
+    <td align="center">{{ total1 + total2 + total3 }}</td>
+    <td align="center">{{ score1 + score2 + score3 }}</td>
+    <td align="center">{{ '{:.2f}'.format((score1 + score2 + score3) / (total1 + total2 + total3)) }}%</td>
+    <td><button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="60">採点結果</button></td>
+    <td>
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="command" value="70">分析結果</button>
+    </td></tr>
+
+</form>
+</table>
+
+{{ comments | safe }}
+
+<div class="buttonwrap" style="display:inline-flex">
+    <form action="summary" >
+        <input type="hidden" name="user_id" value={{ user_id }} />
+        <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="category" value="99">
+            メインメニューへ戻る</button><br></p>
+    </form>
+    <form action="getback" >
+        <input type="hidden" name="user_id" value={{ user_id }} />
+        <input type="hidden" name="test_id" value={{ exam1 }} />
+        <button type="submit" class="btn btn-primary btn-block" style="margin:10px" name="category" value="99">
+            集計画面へ戻る</button><br></p>
+    </form>
+</div>
+</body>
+</html>
