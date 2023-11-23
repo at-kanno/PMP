@@ -1,6 +1,7 @@
 import os
 
 DIFF_JST_FROM_UTC = 9
+EXPLANATION_MODE = 1
 
 # データベースのパスを特定
 base_path = os.path.dirname(__file__)

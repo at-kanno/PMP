@@ -4,7 +4,7 @@ from flask import Flask, session, render_template, request, Blueprint
 import sqlite3, os
 from users import getStage, setStage, getStatus
 from resultDB import getStartTime, getResult, makeComments, getComment, makeTestComments
-from examDB import stringToButton, getExamlist, Question, getQuestion
+from examDB import stringToButton, getExamlist, Question, getQuestion, getCommentId
 
 result_module = Blueprint("result", __name__, static_folder='./static')
 
@@ -294,14 +294,35 @@ def analize():
             else:
                 title = '第１セクション'
 
-        examlist, arealist = getExamlist(exam_id)
+        examlist, arealist, answerlist = getExamlist(exam_id)
 
         q = Question
         q = getQuestion(examlist, q_no)
         answers = "ABCD"
         answer = answers[q.crct]
+#
+        uanswer = (int)(answerlist[q_no-1])
+        cid = getCommentId(examlist, q_no, q.crct+1, uanswer)
 
-        comment = getComment(q.cid)
+#        comments = {0,0,0,0}
+#        comments = {q.cid1, q.cid2, q.cid3, q.cid4}
+#        comments[0] = (int)(q.cid1)
+#        comments[1] = (int)(q.cid2)
+#        comments[2] = (int)(q.cid3)
+#        comments[3] = (int)(q.cid4)
+
+#        if uanswer == 0 or uanswer==q.crct:
+#            cid =  q.cid1
+#        elif uanswer == 1:
+#            cid =  q.cid2
+#        elif uanswer == 2:
+#            cid =  q.cid3
+#        elif uanswer == 3:
+#            cid =  q.cid4
+#        else:
+#            cid = q.cid1
+
+        comment = getComment(cid)
 
         if(total != 180 and total != 60):
             return render_template('analysis.html',

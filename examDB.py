@@ -9,7 +9,7 @@ import datetime
 import re
 
 class Question:
-    def __init__(self, category, level, q, a1, a2, a3, a4, correct, cid):
+    def __init__(self, category, level, q, a1, a2, a3, a4, correct, cid1, cid2, cid3, cid4):
         self.category = category
         self.level = level
         self.q = q
@@ -18,7 +18,10 @@ class Question:
         self.a3 = a3
         self.a4 = a4
         self.correct = correct
-        self.cid = cid
+        self.cid1 = cid1
+        self.cid1 = cid2
+        self.cid1 = cid3
+        self.cid1 = cid4
 
     def show(self):
         print(f'質問 {self.q}')
@@ -53,7 +56,8 @@ def getQuestion(examlist, q_no):
     c = conn.cursor()
     q = Question
 
-    sql = "SELECT Q,A1,A2,A3,A4,CID1 FROM knowledge_base WHERE NUMBER = " + str(number)
+#    sql = "SELECT Q,A1,A2,A3,A4,CID1 FROM knowledge_base WHERE NUMBER = " + str(number)
+    sql = "SELECT Q,A1,A2,A3,A4,CID1, CID2, CID3, CID4 FROM knowledge_base WHERE NUMBER = " + str(number)
     c.execute(sql)
     items = c.fetchall()
 
@@ -69,10 +73,44 @@ def getQuestion(examlist, q_no):
     q.a2 = r[int(idx[1])]
     q.a3 = r[int(idx[2])]
     q.a4 = r[int(idx[3])]
-    q.cid = r[5]
+    q.cid1 = r[4+int(idx[0])]
+    q.cid2 = r[4+int(idx[1])]
+    q.cid3 = r[4+int(idx[2])]
+    q.cid4 = r[4+int(idx[3])]
 
     print('Question=' + q.q)
     return q
+
+# 演習IDと解答からコメントIDを取得する
+def getCommentId(examlist, q_no, canswer, uanswer):
+
+    print(examlist)
+    s1 = examlist.strip('()')
+    print(s1)
+    s2 = s1.replace(')(', ',')
+    print(s2)
+    examlist2 = re.split('[:,]', s2)
+    print(examlist2)
+
+    number = examlist2[(q_no-1) * 5]
+    idx = examlist2[(q_no-1)*5+1:(q_no) * 5]
+
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    q = Question
+
+#    sql = "SELECT Q,A1,A2,A3,A4,CID1 FROM knowledge_base WHERE NUMBER = " + str(number)
+    sql = "SELECT CID1, CID2, CID3, CID4 FROM knowledge_base WHERE NUMBER = " + str(number)
+    c.execute(sql)
+    items = c.fetchall()
+
+    i = int(idx[uanswer-1])-1
+    if uanswer == 0 or uanswer == canswer:
+        return items[0][0]
+    else:
+        return items[0][i]
+
+#    return cid
 
 # 演習IDから問題を取得する
 def getQuestions(exam_id, qlist):
@@ -116,7 +154,7 @@ def getQuestions(exam_id, qlist):
     print(idxlist[0])
 
     for j in range(0, idlistnum):
-        sql = "SELECT Q,A1,A2,A3,A4,CID1 FROM knowledge_base WHERE NUMBER = " \
+        sql = "SELECT Q,A1,A2,A3,A4,CID1,CID2,CID3,CID4 FROM knowledge_base WHERE NUMBER = " \
               + str(idlist[j])
         c.execute(sql)
 
@@ -136,7 +174,11 @@ def getQuestions(exam_id, qlist):
                 r[int(idxlist[k][2])],
                 r[int(idxlist[k][3])],
                 crct,
-                r[5])
+                r[4+int(idxlist[k][0])],
+                r[4+int(idxlist[k][1])],
+                r[4+int(idxlist[k][2])],
+                r[4+int(idxlist[k][3])],
+                )
             print('Question=' + q.q)
             qlist[j] = q
 
@@ -144,14 +186,13 @@ def getQuestions(exam_id, qlist):
 
     return idlistnum
 
-
 def getExamlist(exam_id):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     q = Question
 
     sql = "SELECT  CDATE, CTIME, CATEGORY, LEVEL, AMOUNT," \
-          + " EXAMLIST, AREALIST FROM EXAM_TABLE" \
+          + " EXAMLIST, AREALIST, ANSWERLIST FROM EXAM_TABLE" \
           + " WHERE EXAM_ID = " + str(exam_id) + ";"
 
     print(sql)
@@ -168,8 +209,9 @@ def getExamlist(exam_id):
     amount = items[0][4]
     examlist = items[0][5]
     arealist = items[0][6]
+    answerlist = items[0][7]
 
-    return examlist, arealist
+    return examlist, arealist, answerlist
 
 
 def getExamCandidate(amount, category, level, mode):
@@ -358,14 +400,14 @@ def saveExam(user, category, level, amount, examlist, arealist):
 
 #   演習テーブルを再構成したい場合
     sql = "DROP TABLE EXAM_TABLE;"
-#    c.execute(sql)
+    c.execute(sql)
 
     sql = "CREATE TABLE IF NOT EXISTS EXAM_TABLE (" \
           + " EXAM_ID INTEGER PRIMARY KEY AUTOINCREMENT," \
           + " USER_ID INTEGER, CDATE TIMESTAMP, CTIME TIMESTAMP," \
           + " CATEGORY INTEGER, LEVEL INTEGER, AMOUNT INTEGER," \
           + " EXAMLIST LONG VARCHAR, AREALIST LONG VARCHAR," \
-          + " RESULTLIST LONG VARCHAR, EXAM_TYPE LONG VARCHAR," \
+          + " ANSWERLIST LONG VARCHAR, RESULTLIST LONG VARCHAR, EXAM_TYPE LONG VARCHAR," \
           + " SCORE INTEGER, RATE FLOAT, TOTAL_TIME INTEGER, USED_TIME INTEGER," \
           + " START_TIME TIMESTAMP);"
 

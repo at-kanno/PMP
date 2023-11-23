@@ -271,7 +271,7 @@ def exercise():
         else:
             total_time = 230 * 60
 
-        sql = "UPDATE EXAM_TABLE SET RESULTLIST = \'" + str(resultlist) + "\', SCORE = " + str(correct) + ", USED_TIME = " \
+        sql = "UPDATE EXAM_TABLE SET ANSWERLIST = \'" + str(answerlist) + "\', RESULTLIST = \'" + str(resultlist) + "\', SCORE = " + str(correct) + ", USED_TIME = " \
               + str(usedTime) + ", TOTAL_TIME = " + str(total_time) + ", RATE = " + str(rate) \
               + " WHERE EXAM_ID = " + exam_id + ";"
         print(sql)
