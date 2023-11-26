@@ -8,9 +8,9 @@ import datetime
 #import requests
 import re
 from datetime import timedelta
-from users import check_login, getStage, setStage, getUserList, makePassword,\
+from users import check_login, getStage, setStage, getUserList, makePassword, \
     deleteUser, getUserInfo, password_verify, getLoginName, \
-    getLoginPassword, getStatus, rankUp, rankDown, getMailadress, checkPeriod, user_module
+    getLoginPassword, getStatus, rankUp, rankDown, getMailadress, checkPeriod, user_module, setPassword
 from examDB import getQuestion, getQuestions, Question, \
     makeExam2, saveExam, getCorrectList, stringToButton, getExamlist, \
     getQuestionFromCategory, getQuestionFromNum

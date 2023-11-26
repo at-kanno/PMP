@@ -546,16 +546,17 @@ def getUserResultList2(user_id):
         conn.close()
         return False, n
 
-def setTestData(user_id, test_id, exam_id, used_time, number):
+def setTestData(user_id, test_id, exam_id, used_time, number, stime):
 
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     sql = "DROP TABLE TEST_TABLE;"
-    #    c.execute(sql)
+    # c.execute(sql)
     sql = "CREATE TABLE IF NOT EXISTS TEST_TABLE ( USER_ID INTEGER, "\
         + "TEST_ID INTEGER, USED_TIME1 INTEGER," \
         + "EXAM_ID2 INTEGER, USED_TIME2 INTEGER," \
-        + "EXAM_ID3 INTEGER, USED_TIME3 INTEGER);"
+        + "EXAM_ID3 INTEGER, USED_TIME3 INTEGER," \
+        + "STIME TIME);"
     try:
         c.execute(sql)
     except sqlite3.Error as e:
@@ -565,8 +566,9 @@ def setTestData(user_id, test_id, exam_id, used_time, number):
 
     if number == 1:
         sql = "INSERT INTO TEST_TABLE ( USER_ID, "\
-            + "TEST_ID, USED_TIME1, USED_TIME2, USED_TIME3) VALUES (" + str(user_id) + ", "\
-            + str(test_id) + ", " + str(used_time) + ", 0, 0 );"
+            + "TEST_ID, USED_TIME1, USED_TIME2, USED_TIME3, STIME) VALUES (" + str(user_id) + ", "\
+            + str(test_id) + ", " + str(used_time) + ", \'"\
+            + str(stime) + "\', 0, 0 );"
     elif number == 2:
         sql = "UPDATE TEST_TABLE SET EXAM_ID2 = "\
             + str(exam_id) + ", USED_TIME2 = " + str(used_time) \
@@ -574,7 +576,7 @@ def setTestData(user_id, test_id, exam_id, used_time, number):
     elif number == 3:
         sql = "UPDATE TEST_TABLE SET EXAM_ID3 = "\
             + str(exam_id) + ", USED_TIME3 = " + str(used_time) \
-            + " WHERE TEST_ID = " + str(test_id) + ";"
+            + " WHERE TEST_ID = " + str(test_id) + ""
     else:
         conn.close()
         return False
@@ -622,7 +624,7 @@ def getTestID(user_id):
         n = len(items)
         conn.close()
         if n < 1:
-            return false
+            return False
         else:
             return items[0][0]
     except sqlite3.Error as e:
@@ -643,7 +645,7 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return false
+            return False
         exam2 = items[0][0]
         exam3 = items[0][1]
         time1 = items[0][2]
@@ -656,7 +658,7 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return false
+            return False
         total1 = items[0][0]
         score1 = items[0][1]
         percentage1 = items[0][2]
@@ -667,7 +669,7 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return false
+            return False
         total2 = items[0][0]
         score2 = items[0][1]
         percentage2 = items[0][2]
@@ -678,7 +680,7 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return false
+            return False
         total3 = items[0][0]
         score3 = items[0][1]
         percentage3 = items[0][2]
@@ -689,7 +691,7 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return false
+            return False
         type = items[0][0]
 
         return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \

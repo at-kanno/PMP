@@ -400,7 +400,7 @@ def saveExam(user, category, level, amount, examlist, arealist):
 
 #   演習テーブルを再構成したい場合
     sql = "DROP TABLE EXAM_TABLE;"
-    c.execute(sql)
+#    c.execute(sql)
 
     sql = "CREATE TABLE IF NOT EXISTS EXAM_TABLE (" \
           + " EXAM_ID INTEGER PRIMARY KEY AUTOINCREMENT," \

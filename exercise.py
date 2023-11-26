@@ -9,7 +9,7 @@ from users import getStage, setStage, getStatus, rankUp, rankDown, getMailadress
 import sqlite3, os
 import datetime
 from examDB import getQuestion, getQuestions, Question, getCorrectList, makeExam2, saveExam, getExamTYpe
-from resultDB import putResult, setTestData, getTestData, getTestID, getTestResult
+from resultDB import putResult, setTestData, getTestData, getTestID, getTestResult, getStartTime
 from mail import sendMail
 
 exec_module = Blueprint("exercise", __name__, static_folder='./static')
@@ -292,7 +292,8 @@ def exercise():
         if(examMode==1 and total==constant.MaxQuestions):
             if stage == 3:
                 setStage(user_id, 13)
-                setTestData(user_id, exam_id, exam_id, usedTime, 1)
+                stime = getStartTime(exam_id)
+                setTestData(user_id, exam_id, exam_id, usedTime, 1, stime)
                 test_id = exam_id
                 amount = constant.MaxQuestions
                 type = getExamTYpe(exam_id)
@@ -336,7 +337,8 @@ def exercise():
                 try:
                     test_id = getTestID(user_id)
 #                    test_id = int(exam_id) - 1
-                    setTestData(user_id, test_id, exam_id, usedTime, 2)
+                    stime = getStartTime(exam_id)
+                    setTestData(user_id, test_id, exam_id, usedTime, 2, stime)
 
                     items = getTestData(user_id, test_id)
                     usedTime = usedTime + items[0][0]
@@ -389,7 +391,8 @@ def exercise():
                 try:
                     test_id = getTestID(user_id)
 #                    test_id = int(exam_id) - 2
-                    setTestData(user_id, test_id, exam_id, usedTime, 3)
+                    stime = getStartTime(exam_id)
+                    setTestData(user_id, test_id, exam_id, usedTime, 3, stime)
                     items = getTestData(user_id, test_id)
                 except:
                     return "Error...."
