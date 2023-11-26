@@ -836,6 +836,44 @@ def summary2():
     else:
        comments = ""
 
+
+    time1h = int(time1 / 3600)
+    time1m = int(time1 / 60)
+    time1m = time1m - (time1h * 60)
+    time1s = time1 % 60
+    if (time1h == 0):
+        time1Str = str(time1m) + "分" + str(time1s) + "秒"
+    else:
+        time1Str = str(time1h) + "時間" + str(time1m) + "分" + str(time1s) + "秒"
+
+    time2h = int(time2 / 3600)
+    time2m = int(time2 / 60)
+    time2m = time2m - (time2h * 60)
+    time2s = time2 % 60
+    if (time2h == 0):
+        time2Str = str(time2m) + "分" + str(time2s) + "秒"
+    else:
+        time2Str = str(time2h) + "時間" + str(time2m) + "分" + str(time2s) + "秒"
+
+    time3h = int(time3 / 3600)
+    time3m = int(time3 / 60)
+    time3m = time3m - (time3h * 60)
+    time3s = time3 % 60
+    if (time3h == 0):
+        time3Str = str(time3m) + "分" + str(time3s) + "秒"
+    else:
+        time3Str = str(time3h) + "時間" + str(time3m) + "分" + str(time3s) + "秒"
+
+    timeT = time1 + time2 + time3
+    timeTh = int(timeT / 3600)
+    timeTm = int(timeT / 60)
+    timeTm = timeTm - (timeTh * 60)
+    timeTs = timeT % 60
+    if (timeTh == 0):
+        timeTStr = str(timeTm) + "分" + str(timeTs) + "秒"
+    else:
+        timeTStr = str(timeTh) + "時間" + str(timeTm) + "分" + str(timeTs) + "秒"
+
     return render_template('finish3.html',
                            user_id=user_id,
                            exam1=exam1,
@@ -855,6 +893,11 @@ def summary2():
                            percentage3=percentage3,
                            flag=0,
                            comments=comments,
+                           time1Str=time1Str,
+                           time2Str=time2Str,
+                           time3Str=time3Str,
+                           timeTStr=timeTStr,
+                           title=title,
                            )
 
 
