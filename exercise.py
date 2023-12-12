@@ -17,6 +17,7 @@ exec_module = Blueprint("exercise", __name__, static_folder='./static')
 # 問題の出題
 @exec_module.route('/exercise')
 def exercise():
+    return_value = [16]
 
     command = request.args.get("command", "")
     q_no = request.args.get("q_no", "")
@@ -462,7 +463,26 @@ def exercise():
                                )
         else:
             test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
-            total2, score2, percentage2, total3, score3, percentage3, type = getTestResult(test_id)
+                total2, score2, percentage2, total3, score3, percentage3, type = getTestResult(test_id)
+#            return_value = int[16]
+#            return_value = getTestResult(test_id)
+
+            # test_id = (int)(return_value[0])
+            # exam2 = (int)(return_value[1])
+            # exam3 = (int)(return_value[2])
+            # time1 = (int)(return_value[3])
+            # time2 = (int)(return_value[4])
+            # time3 = (int)(return_value[5])
+            # total1 = (int)(return_value[6])
+            # score1 = (int)(return_value[7])
+            # percentage1 = (float)(return_value[8])
+            # total2 = (int)(return_value[9])
+            # score2 = (int)(return_value[10])
+            # percentage2 = (float)(return_value[11])
+            # total3 = (int)(return_value[12])
+            # score3 = (int)(return_value[13])
+            # percentage3 = (float)(return_value[14])
+            # type = (str)(return_value[15])
 
             time1h = int(time1 / 3600)
             time1m = int(time1 / 60)
@@ -537,6 +557,24 @@ def getBaack():
 
     test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
      total2, score2, percentage2, total3, score3, percentage3, type = getTestResult(test_id)
+
+#    return_value = getTestResult(test_id)
+#    test_id = (int)(return_value[0])
+#    exam2 = (int)(return_value[1])
+#    exam3 = (int)(return_value[2])
+#    time1 = (int)(return_value[3])
+#    time2 = (int)(return_value[4])
+#    time3 = (int)(return_value[5])
+#    total1 = (int)(return_value[6])
+#    score1 = (int)(return_value[7])
+#    percentage1 = (float)(return_value[8])
+#    total2 = (int)(return_value[9])
+#    score2 = (int)(return_value[10])
+#    percentage2 = (float)(return_value[11])
+#    total3 = (int)(return_value[12])
+#    score3 = (int)(return_value[13])
+#    percentage3 = (float)(return_value[14])
+#    type = (str)(return_value[15])
 
     time1h = int(time1 / 3600)
     time1m = int(time1 / 60)

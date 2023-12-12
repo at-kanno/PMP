@@ -47,7 +47,7 @@ window.onload = initialize;
 
           {%  for id, lastname, address in user_list %}
 
-    <div class="item" style="display:inline-flex">
+    <div class="item" style="display:table">
      <table><td style="display:inline-flex">
      <form action="display" method="POST">
          <input type="hidden" name = "user_id" value="{{ user_id }}" >

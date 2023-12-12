@@ -633,6 +633,22 @@ def getTestID(user_id):
         return False
 
 def getTestResult(test_id):
+#    return_value = [0 for i in range(16)]
+    exam2 = 0
+    exam3 = 0
+    time1 = 0
+    time2 = 0
+    time3 = 0
+    total1 = 0
+    score1 = 0
+    percentage1 = 0
+    total2 = 0
+    score2 = 0
+    percentage2 = 0
+    total3 = 0
+    score3 = 0
+    percentage3 = 0
+    type = '-1'
 
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
@@ -645,7 +661,9 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return False
+            type = '-2'
+            return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
+                total2, score2, percentage2, total3, score3, percentage3, type
         exam2 = items[0][0]
         exam3 = items[0][1]
         time1 = items[0][2]
@@ -658,7 +676,9 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return False
+            type = '-3'
+            return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
+                total2, score2, percentage2, total3, score3, percentage3, type
         total1 = items[0][0]
         score1 = items[0][1]
         percentage1 = items[0][2]
@@ -669,7 +689,9 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return False
+            type = '-4'
+            return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
+                total2, score2, percentage2, total3, score3, percentage3, type
         total2 = items[0][0]
         score2 = items[0][1]
         percentage2 = items[0][2]
@@ -680,7 +702,9 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return False
+            type = '-5'
+            return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
+                total2, score2, percentage2, total3, score3, percentage3, type
         total3 = items[0][0]
         score3 = items[0][1]
         percentage3 = items[0][2]
@@ -691,15 +715,36 @@ def getTestResult(test_id):
         items = c.fetchall()
         n = len(items)
         if n < 1:
-            return False
+            type = '-6'
+            return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
+                total2, score2, percentage2, total3, score3, percentage3, type
         type = items[0][0]
 
+ #       return_value[0] = test_id
+ #       return_value[1] = exam2
+ #       return_value[2] = exam3
+ #       return_value[3] = time1
+ #       return_value[4] = time2
+ #       return_value[5] = time3
+ #       return_value[6] = total1
+ #       return_value[7] = score1
+ #       return_value[8] = percentage1
+ #       return_value[9] = total2
+ #       return_value[10] = score2
+ #       return_value[11] = percentage2
+ #       return_value[12] = total3
+ #       return_value[13] = score3
+ #       return_value[14] = percentage3
+ #       return_value[15] = type
+ #       return return_value
         return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
             total2, score2, percentage2, total3, score3, percentage3, type
     except sqlite3.Error as e:
         print('sqlite3.Error occurred:', e.args[0])
         conn.close()
-        return False
+        type = '-7'
+        return test_id, exam2, exam3, time1, time2, time3, total1, score1, percentage1, \
+            total2, score2, percentage2, total3, score3, percentage3, type
 
 
 # コメント文を作成する
