@@ -874,7 +874,7 @@ def summary2():
     else:
         timeTStr = str(timeTh) + "時間" + str(timeTm) + "分" + str(timeTs) + "秒"
 
-    return render_template('finish3.html',
+    return render_template('analyze.html',
                            user_id=user_id,
                            exam1=exam1,
                            exam2=exam2,

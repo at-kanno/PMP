@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>集計画面</title>
+	<title>分析結果</title>
 </head>
 
 <body>
 
-<h3><b><ul>{{ title }}（集計画面）</ul></b></h3>
+<h3><b><ul>{{ title }}（分析結果）</ul></b></h3>
 
 <p>
 集計結果は次の通りです。
@@ -85,6 +85,12 @@
         <input type="hidden" name="user_id" value={{ user_id }} />
         <button type="submit" style="margin:10px" class="btn btn-primary btn-block" name="category" value="99">
             メインメニューへ戻る</button><br></p>
+    </form>
+    <form action="getback" >
+        <input type="hidden" name="user_id" value={{ user_id }} />
+        <input type="hidden" name="test_id" value={{ exam1 }} />
+        <button type="submit" class="btn btn-primary btn-block" style="margin:10px" name="category" value="99">
+            集計画面へ戻る</button><br></p>
     </form>
 </div>
 </body>
