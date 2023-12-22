@@ -3,7 +3,7 @@ from constant import db_path, PassScore1, PassScore2, categoryCode, practice, \
 from flask import Flask, session, render_template, request, jsonify
 #from flask_login import LoginManager, UserMixin, login_user, logout_user
 import logging
-import sqlite3, os, sys, cgi
+import sqlite3, os, sys
 import datetime
 #import requests
 import re

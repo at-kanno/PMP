@@ -521,7 +521,7 @@ def exercise():
             else:
                 timeTStr = str(timeTh) + "時間" + str(timeTm) + "分" + str(timeTs) + "秒"
 
-            return render_template('finish3.html',
+            return render_template('summary.html',
                                user_id=user_id,
                                test_id=test_id,
                                exam1=test_id,
