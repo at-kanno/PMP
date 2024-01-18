@@ -1,4 +1,4 @@
-from constant import db_path, examTitle1, examTitle2, examTitle3, examTitle4, \
+from constant import db_path, examTitle1, examTitle2, examTitle3, examTitle4, examTitle5,\
      examTitle10, examTitle11, examTitle12, abbreviation
 from flask import Flask, session, render_template, request, Blueprint
 import sqlite3, os
@@ -38,41 +38,39 @@ def makeExam():
                                    status=status,
                                    )
         elif (category == '60'):
-            amount = 18
+            amount = 10
             title = examTitle10
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 1380, '')
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 720, '')
         elif (category == '70'):
-            amount = 60
+            amount = 100
 #            title = examTitle11
-            title = examTitle11 + '（第１セクション）'
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 13800, '')
+            title = examTitle11
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 7200, '')
         elif (category == '80'):
-            amount = 60
+            amount = 100
 #            title = examTitle12
-            title = examTitle12 + '（第１セクション）'
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 13800, '')
+            title = examTitle12
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 7200, '')
         elif (category == '10'):
-            amount = 10
+            amount = 5
             title = examTitle1
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 780, '')
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 360, '')
         elif (category == '20'):
-            amount = 10
+            amount = 5
             title = examTitle2
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 780, '')
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 360, '')
         elif (category == '30'):
             amount = 10
             title = examTitle3
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 780, '')
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 720, '')
         elif (category == '40'):
             amount = 10
             title = examTitle4
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 780, '')
-        elif (category == '81' or category == '82' or category == '83' \
-              or category == '84' or category == '85' or category == '86'\
-              or category == '87' or category == '88' or category == '89'\
-              or category == '90' or category == '91' or category == '92'):
-            amount = 10
-            examlist, arealist = makeExam2(user_id, amount, int(category), level, 780, '')
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 720, '')
+        elif (category == '50'):
+            amount = 5
+            title = examTitle5
+            examlist, arealist = makeExam2(user_id, amount, int(category), level, 360, '')
         else:
             setStage(user_id, 9)
             return render_template('admin.html', user_id=int(user_id))
@@ -128,14 +126,24 @@ def makeExam3():
 
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
+
+        sql = "SELECT CID" + str(permutation[ans-1:ans]) + " FROM knowledge_base WHERE NUMBER = " + str(num)
+        if ans == 9:
+            sql = "SELECT CID1 FROM knowledge_base WHERE NUMBER = " + str(num)
+        c.execute(sql)
+        items = c.fetchall()
+
         sql = "SELECT  COMMENT FROM COMMENTS_TABLE" \
-              + " WHERE COMMENT_ID = " + str(cid) + ";"
+              + " WHERE COMMENT_ID = " + str(items[0][0]) + ";"
         if c.execute(sql):
             print("Success!")
         else:
             print("Error!")
         items = c.fetchall()
         comment = items[0][0]
+
+        if ans == 9:
+            comment = comment.replace('正しい。','',1)
 
         area = request.form.get('area')
         return render_template('analysis2.html',
@@ -165,60 +173,17 @@ def makeExam3():
         #        category = request.form['category']
         print('category=' + str(category))
 
-# １問１答の処理（91:FND,92:CDS,93:DSV,94:HVIT,95:DPI）
-        if (category == '81'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(11, 11)
-        elif (category == '82'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(12, 12)
-        elif (category == '83'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(13, 13)
-        elif (category == '84'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(14, 14)
-        elif (category == '85'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(21, 21)
-        elif (category == '86'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(22, 22)
-        elif (category == '87'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(23, 23)
-        elif (category == '88'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(24, 24)
-        elif (category == '89'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(31, 31)
-        elif (category == '90'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(32, 32)
-        elif (category == '91'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(33, 33)
+# １問１答の処理（91:事業の成長,92:経営認識,93:経営実現,94:経営共通,95:前提知識）
+        if (category == '91'):
+            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(10, 13)
         elif (category == '92'):
-            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(34, 34)
-# 第2メニュー
-        elif (category == '5'):
-            setStage(user_id, 1)
-            status = getStatus(user_id)
-            return render_template('main-menu1.html',
-                                   user_id=user_id,
-                                   status=status,
-                                   )
-        elif (category == '6'):
-            setStage(user_id, 1)
-            status = getStatus(user_id)
-            return render_template('main-menu2.html',
-                                   user_id=user_id,
-                                   status=status,
-                                   )
-        elif (category == '7'):
-            setStage(user_id, 1)
-            status = getStatus(user_id)
-            return render_template('main-menu3.html',
-                                   user_id=user_id,
-                                   status=status,
-                                   )
-        elif (category == '8'):
-            setStage(user_id, 1)
-            status = getStatus(user_id)
-            return render_template('main-menu4.html',
-                                   user_id=user_id,
-                                   status=status,
-                                   )
+            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(20, 23)
+        elif (category == '93'):
+            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(30, 35)
+        elif (category == '94'):
+            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(40, 43)
+        elif (category == '95'):
+            q, a1, a2, a3, a4, crct, cid, num, permutation = getQuestionFromCategory(50, 53)
 # メインメニューに戻る
         else:
             setStage(user_id, 1)
@@ -228,7 +193,7 @@ def makeExam3():
                                    status=status,
                                    )
 
-    n = int(category) - 81
+    n = int(category) - 91
     return render_template('exercise2.html',
                            user_id=user_id,
                            question=q,

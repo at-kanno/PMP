@@ -1,5 +1,5 @@
 from constant import db_path, NumOfCategory, NumOfArea, categoryCode, \
-     NumOfCategory1, NumOfCategory2, NumOfCategory3, \
+     NumOfCategory1, NumOfCategory2, NumOfCategory3, NumOfCategory4, NumOfCategory5,\
      NumOfCheckArea, Area_Base
 from flask import Flask, request, render_template
 import sqlite3, os, json
@@ -39,9 +39,18 @@ def putResult(user_id, exam_id, amount, arealist, answerlist, resultlist, correc
         elif n < NumOfCategory2:
             areaNumber[1] += 1
             areaScore[1] = areaScore[1] + flag
-        else:
+        elif n < NumOfCategory3:
             areaNumber[2] += 1
             areaScore[2] = areaScore[2] + flag
+        elif n < NumOfCategory4:
+            areaNumber[3] += 1
+            areaScore[3] = areaScore[3] + flag
+        elif n < NumOfCategory5:
+            areaNumber[4] += 1
+            areaScore[4] = areaScore[4] + flag
+        else:
+            areaNumber[5] += 1
+            areaScore[5] = areaScore[5] + flag
 
     for i in range(NumOfCategory):
         if categoryNumber[i] != 0:
@@ -91,7 +100,7 @@ def putResult(user_id, exam_id, amount, arealist, answerlist, resultlist, correc
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     sql = "DROP TABLE RESULT_TABLE;"
-    #    c.execute(sql)
+    # c.execute(sql)
     sql = "CREATE TABLE IF NOT EXISTS RESULT_TABLE ( EXAM_ID INTEGER, USER_ID INTEGER, EXAM_TYPE LONG VARCHAR,"\
         + "TOTAL INTEGER, TOTAL_R INTEGER, TOTAL_P FLOAT," \
         + "C1_NUMBER INTEGER, C1_SCORE INTEGER, C1_PERCENT FLOAT," \
@@ -106,9 +115,17 @@ def putResult(user_id, exam_id, amount, arealist, answerlist, resultlist, correc
         + "C10_NUMBER INTEGER, C10_SCORE INTEGER, C10_PERCENT FLOAT," \
         + "C11_NUMBER INTEGER, C11_SCORE INTEGER, C11_PERCENT FLOAT," \
         + "C12_NUMBER INTEGER, C12_SCORE INTEGER, C12_PERCENT FLOAT," \
+        + "C13_NUMBER INTEGER, C13_SCORE INTEGER, C13_PERCENT FLOAT," \
+        + "C14_NUMBER INTEGER, C14_SCORE INTEGER, C14_PERCENT FLOAT," \
+        + "C15_NUMBER INTEGER, C15_SCORE INTEGER, C15_PERCENT FLOAT," \
+        + "C16_NUMBER INTEGER, C16_SCORE INTEGER, C16_PERCENT FLOAT," \
+        + "C17_NUMBER INTEGER, C17_SCORE INTEGER, C17_PERCENT FLOAT," \
+        + "C18_NUMBER INTEGER, C18_SCORE INTEGER, C18_PERCENT FLOAT," \
         + "A1_NUMBER INTEGER, A1_SCORE INTEGER, A1_PERCENT FLOAT," \
         + "A2_NUMBER INTEGER, A2_SCORE INTEGER, A2_PERCENT FLOAT," \
         + "A3_NUMBER INTEGER, A3_SCORE INTEGER, A3_PERCENT FLOAT," \
+        + "A4_NUMBER INTEGER, A4_SCORE INTEGER, A4_PERCENT FLOAT," \
+        + "A5_NUMBER INTEGER, A5_SCORE INTEGER, A5_PERCENT FLOAT," \
         + "HALF1 FLOAT, HALF2 FLOAT, RESPONSE INTEGER, CORRECT_RES_RATE FLOAT," \
         + "REMAIN_TIME INTEGER, REMAIN_TIME_RATE FLOAT, LAST3 INTEGER);"
     c.execute(sql)
@@ -173,9 +190,9 @@ def getResult(exam_id):
             categoryPercent[i] = categoryScore[i] / categoryNumber[i] * 100
 
     for i in range(NumOfArea):
-        areaNumber[i] = items[0][i*3+42]    # 42 = 6 + (12 x 3)
-        areaScore[i] = items[0][i*3+43]
-        areaPercent[i] = items[0][i*3+44]
+        areaNumber[i] = items[0][i*3+60]    # 60 = 6 + (18 x 3)
+        areaScore[i] = items[0][i*3+61]
+        areaPercent[i] = items[0][i*3+62]
 
     return categoryNumber, categoryScore, categoryPercent, areaNumber, \
            areaScore, areaPercent
@@ -224,7 +241,9 @@ def makeComments(exam_id):
     sql = 'SELECT TOTAL, TOTAL_P, TOTAL_R,'\
           'A1_NUMBER, A1_SCORE, A1_PERCENT,'\
           'A2_NUMBER , A2_SCORE, A2_PERCENT,'\
-          'A3_NUMBER , A3_SCORE , A3_PERCENT'\
+          'A3_NUMBER , A3_SCORE , A3_PERCENT,'\
+          'A4_NUMBER , A4_SCORE , A4_PERCENT,'\
+          'A5_NUMBER , A5_SCORE , A5_PERCENT'\
           ' FROM RESULT_TABLE WHERE EXAM_ID = ' + str(exam_id)
     c.execute(sql)
     items = c.fetchall()
@@ -249,7 +268,13 @@ def makeComments(exam_id):
           'C9_NUMBER , C9_SCORE , C9_PERCENT ,'\
           'C10_NUMBER , C10_SCORE , C10_PERCENT ,'\
           'C11_NUMBER , C11_SCORE , C11_PERCENT ,'\
-          'C12_NUMBER , C12_SCORE , C12_PERCENT '\
+          'C12_NUMBER , C12_SCORE , C12_PERCENT ,'\
+          'C13_NUMBER , C13_SCORE , C13_PERCENT ,'\
+          'C14_NUMBER , C14_SCORE , C14_PERCENT ,'\
+          'C15_NUMBER , C15_SCORE , C15_PERCENT ,'\
+          'C16_NUMBER , C16_SCORE , C16_PERCENT ,'\
+          'C17_NUMBER , C17_SCORE , C17_PERCENT ,'\
+          'C18_NUMBER , C18_SCORE , C18_PERCENT '\
           ' FROM RESULT_TABLE WHERE EXAM_ID = ' + str(exam_id)
     c.execute(sql)
     items = c.fetchall()
@@ -357,23 +382,28 @@ def makeComments(exam_id):
 
 #   解答結果の分析とコメント選択
 #   全領域選択の場合
-    if total == 60 or total == 18:
+    if total == 100:
 #   すべての領域で 50 % 以下の正答率の場合
-        if areaPercent[0] < 50 and areaPercent[1] < 50 and areaPercent[2] < 50 :
+        if areaPercent[0] < 50 and areaPercent[1] < 50 and areaPercent[2] < 50 \
+                and areaPercent[3] < 50 and areaPercent[4] < 50:
             cid = 538
 #   全領域で 80 % 以上、正解している場合
-        elif areaPercent[0] > 80 and areaPercent[1] > 80 and areaPercent[2] > 80 :
+        elif areaPercent[0] > 80 and areaPercent[1] > 80 and areaPercent[2] > 80 \
+                and areaPercent[3] > 80 and areaPercent[4] > 80:
             cid = 590
 #   50 % 以下の正答率の領域があった場合
-        elif areaPercent[0] < 50 or areaPercent[1] < 50 or areaPercent[2] < 50 :
+        elif areaPercent[0] < 50 or areaPercent[1] < 50 or areaPercent[2] < 50 \
+                or areaPercent[3] < 50 or areaPercent[4] < 50:
 #   かつ、80 % 以上の正答率の領域もある場合
-            if areaPercent[0] > 80 or areaPercent[1] > 80 or areaPercent[2] > 80 :
+            if areaPercent[0] > 80 or areaPercent[1] > 80 or areaPercent[2] > 80 \
+                    or areaPercent[3] > 80 or areaPercent[4] > 80:
                 cid = 591
 #   かつ、80 % 　以上正答した領域がない場合
             else:
                 cid = 537
 #   すべての領域が 50 % 以上の正答率であり、80 % を超える領域もある場合
-        elif areaPercent[0] > 80 or areaPercent[1] > 80 or areaPercent[2] > 80 :
+        elif areaPercent[0] > 80 or areaPercent[1] > 80 or areaPercent[2] > 80 \
+                or areaPercent[3] > 80 or areaPercent[4] > 80:
             cid = 592
 # すべての領域が 50 % 以上、79 % 以下の正答率である場合
         else:

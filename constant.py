@@ -11,32 +11,41 @@ db_path = base_path + '/exam.sqlite'
 form_path = base_path + '/templates'
 FILES_DIR = base_path + '/static'
 
-NumOfArea = 3
-NumOfCategory = 12
+NumOfArea = 5
+NumOfCategory = 18
 
-NumOfCategory1 = 4
-NumOfCategory2 = 8
+NumOfCategory1 = 3
+NumOfCategory2 = 7
 NumOfCategory3 = 12
-NumOfCheckArea = 12
+NumOfCategory4 = 15
+NumOfCategory5 = 18
+NumOfCheckArea = 18
 
-examType1 = "人(10問)"
-examType2 = "プロセス(10問)"
-examType3 = "事業環境(10問)"
+examType1 = "事業の成長(5問)"
+examType2 = "経営認識(5問)"
+examType3 = "経営実現(10問)"
+examType4 = "経営共通(10問)"
+examType5 = "前提知識(5問)"
 examType10 = "全領域(10問)"
 examType11 = "模擬試験(180問)"
 examType12 = "実力試験(180問)"
 examType99 = "その他"
 
-examTitle1 = "人：確認問題"
-examTitle2 = "プロセス：確認問題"
-examTitle3 = "事業環境：確認問題"
-examTitle4 = "全領域：確認問題"
+examTitle1 = "ＩＴによる事業の成長：確認問題"
+examTitle2 = "ＩＴ経営認識：確認問題"
+examTitle3 = "ＩＴ経営実現：確認問題"
+examTitle4 = "ＩＴ経営共通：確認問題"
+examTitle5 = "前提知識：確認問題"
 examTitle10 = "確認問題（全領域）"
 examTitle11 = "模擬試験"
 examTitle12 = "実力試験"
 
-abbreviation = ['チーム作り', '評価・パフォーマンス', '交渉・コンフリクト', '協力・サポート', 'プロセス全体','予測的アプローチ',\
-                'アジャイル', 'ハイブリッド', 'コンプライアンス', 'ベネフィットと価値 ','外部ビジネス環境の変化', '組織の変更']
+#abbreviation = ['ＩＴ経営とは', 'ＩＴ経営を支える人財と役割', 'ＩＴ経営の推進方法', 'ＩＴ経営認識', '変革認識','変革マネジメント',
+#                '持続的成長認識', 'ＩＴ経営実現', '経営戦略', '業務改革 ','ＩＴ戦略', 'ＩＴ利活用',
+#                'プロジェクトマネジメント', 'モニタリング&コントロール', 'コミュニケーション',
+#                '基本知識 ', 'ＩＴ経営推進ガイドライン', '持続的成長とは']
+
+abbreviation = ['ＩＴによる事業の成長', 'ＩＴ経営認識', 'ＩＴ経営実現', 'ＩＴ経営共通', '前提知識']
 
 PassScore1 = 70
 PassScore2 = 75
@@ -46,11 +55,14 @@ categoryCode = "0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVW" \
                + "XYZ[]^`abcdefghijklmnopqrstuvwxyz"
 
 # 出題カテゴリから問題列を生成する
-MaxQuestions = 60
+MaxQuestions = 100
 
-categoryNumber = [11, 12, 13, 14, \
-                  21, 22, 23, 24, \
-                  31, 32, 33, 34]
+categoryNumber = [11, 12, 13,
+                  20, 21, 22, 23,
+                  31, 32, 33, 34, 35,
+                  41, 42, 43,
+                  51, 52, 53
+                  ]
 
 PASS1_MASSAGE = "おめでとうございます。修了試験の前半合格です。<br>頑張ってこられた成果が出ました。<br>" \
     + "あと１回修了試験の後半があります。<br>それに合格すると、いよいよ本試験（認定試験）です。<br>" \
@@ -128,14 +140,18 @@ return4 = '" /><button type="submit" style="margin:10px" name="category" value="
           'メインメニューへ戻る</button><br></p></form>'
 
 areaname = [
-    ["人", 4, "", "", ""],
-    ["プロセス", 4, "", "", ""],
-    ["事業環境", 4, "", "", ""],
+    ["ＩＴによる事業の成長", 3, "", "", ""],
+    ["ＩＴ経営認識", 4, "", "", ""],
+    ["ＩＴ経営実現", 5, "", "", ""],
+    ["ＩＴ経営共通", 3, "", "", ""],
+    ["前提知識", 3, "", "", ""],
 ]
 practice = [
-    ["チーム作り", "評価・パフォーマンス", "交渉・コンフリクト", "協力・サポート"],
-    ["プロセス全体", "予測的アプローチ", "アジャイル", "ハイブリッド"],
-    ["コンプライアンス", "プロジェクトのベネフィットと価値", "外部ビジネス環境の変化", "組織の変更"],
+    ["ＩＴ経営とは", "人財と役割", "ＩＴ経営の推進方法"],
+    ["ＩＴ経営認識", "変革認識", "変革マネジメント", "持続的成長認識"],
+    ["ＩＴ経営戦略", "業務改革", "ＩＴ戦略", "ＩＴ利活用", "ＩＴ経営実現"],
+    ["プロジェクトマネジメント", "モニタリング&コントロール", "コミュニケーション"],
+    ["基本知識", "ＩＴ経営推進ガイドライン", "持続的成長"],
 ]
 
 #LOGIN_URL = 'http://54.163.203.19:5000/'
@@ -167,5 +183,5 @@ servername = "smtp.gmail.com"
 
 #
 examMode = 1
-Area_Base = 741
+Area_Base = 701
 

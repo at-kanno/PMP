@@ -154,7 +154,7 @@ def read_comments_csv(conn, fname):
         c = conn.cursor()
         f = open(fname, encoding='cp932')
         #    f = open(fname, encoding='shift-jis')
-        #    f = open(fname, encoding='utf_8')
+        # f = open(fname, encoding='utf_8')
         reader = csv.reader(f)
         for row in reader:
             comment_id = int(row[0])

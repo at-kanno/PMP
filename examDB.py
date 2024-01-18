@@ -1,7 +1,7 @@
 import constant
 from constant import db_path, MaxQuestions, NumOfArea, NumOfCategory, categoryNumber, categoryCode, \
-     NumOfCategory1, NumOfCategory2, NumOfCategory3, DIFF_JST_FROM_UTC, \
-     examType1, examType2, examType3, examType10, examType11, examType12, examType99
+     NumOfCategory1, NumOfCategory2, NumOfCategory3, NumOfCategory4, NumOfCategory5, DIFF_JST_FROM_UTC, \
+     examType1, examType2, examType3, examType4, examType5, examType10, examType11, examType12, examType99
 from flask import Flask, request, render_template
 import sqlite3, os, json
 import random
@@ -99,7 +99,6 @@ def getCommentId(examlist, q_no, canswer, uanswer):
     c = conn.cursor()
     q = Question
 
-#    sql = "SELECT Q,A1,A2,A3,A4,CID1 FROM knowledge_base WHERE NUMBER = " + str(number)
     sql = "SELECT CID1, CID2, CID3, CID4 FROM knowledge_base WHERE NUMBER = " + str(number)
     c.execute(sql)
     items = c.fetchall()
@@ -109,8 +108,6 @@ def getCommentId(examlist, q_no, canswer, uanswer):
         return items[0][0]
     else:
         return items[0][i]
-
-#    return cid
 
 # 演習IDから問題を取得する
 def getQuestions(exam_id, qlist):
@@ -419,6 +416,10 @@ def saveExam(user, category, level, amount, examlist, arealist):
         examType = examType2
     elif category == '30':
         examType = examType3
+    elif category == '40':
+        examType = examType4
+    elif category == '50':
+        examType = examType5
     elif category == '60':
         examType = examType10
     elif category == '70':
@@ -491,8 +492,14 @@ def makeExam2(userid, amount, category: int, level, time, arealist):
                     selectArea[0] += 1
                 elif (j < NumOfCategory2):
                     selectArea[1] += 1
-                else:
+                elif (j < NumOfCategory3):
                     selectArea[2] += 1
+                elif (j < NumOfCategory4):
+                    selectArea[3] += 1
+                elif (j < NumOfCategory5):
+                    selectArea[4] += 1
+                else:
+                    selectArea[5] += 1
                 break
             else:
                 pass
@@ -575,27 +582,17 @@ def assignQuestions(amount, assign, category:int):
 
 # FND
     if category == 10:
-        assign[0] = 11
+        assign[0] = 13
         assign[1] = 12
-        assign[2] = 13
-        assign[3] = 14
-        assign[4] = 14
-        assign[5] = 13
-        assign[6] = 12
-        assign[7] = 12
-        assign[8] = 11
-        assign[9] = 14
+        assign[2] = 11
+        assign[3] = 13
+        assign[4] = 13
     elif category == 20:
-        assign[0] = 24
-        assign[1] = 22
+        assign[0] = 22
+        assign[1] = 21
         assign[2] = 23
-        assign[3] = 21
-        assign[4] = 22
-        assign[5] = 24
-        assign[6] = 21
-        assign[7] = 23
-        assign[8] = 24
-        assign[9] = 22
+        assign[3] = 20
+        assign[4] = 20 + random.randint(0, 1)
     elif category == 30:
         assign[0] = 34
         assign[1] = 31
@@ -603,72 +600,129 @@ def assignQuestions(amount, assign, category:int):
         assign[3] = 34
         assign[4] = 33
         assign[5] = 31
-        assign[6] = 33
+        assign[6] = 33 + (random.randint(0, 1))*2
         assign[7] = 34
         assign[8] = 32
         assign[9] = 33
+    elif category == 40:
+        assign[0] = 43
+        assign[1] = 41
+        assign[2] = 42
+        assign[3] = 43
+        assign[4] = 42
+        assign[5] = 41
+        assign[6] = 43
+        assign[7] = 41
+        assign[8] = 42
+        assign[9] = 41
+    elif category == 50:
+        assign[0] = 51
+        assign[1] = 52
+        assign[2] = 53
+        assign[3] = 51
+        assign[4] = 51
     elif category == 60 or category == 70 or category == 80:
-        assign[0] = 24    # バリューストリーム（ユーザサポート）
-        assign[1] = 33    # デジタルサービス体験のデザイン
-        assign[2] = 22    # コントロールの範囲の特定
-        assign[3] = 12    # HVITにおける原則や概念
-        assign[4] = 23    # 従うべき原則（個別）
-        assign[5] = 32    # サービス価値の確認
-        assign[6] = 14    # サービスバリューチェーン活動
-        assign[7] = 21    # SVS導入における課題
-        assign[8] = 23    # コミュニケーションの原則
-        assign[9] = 31    # ＤX関連の概念
-        assign[10] = 24    # バリューストリーム（ユーザサポート）
-        assign[11] = 22    # デジタルサービス体験のデザイン
-        assign[12] = 14    # コントロールの範囲の特定
-        assign[13] = 11    # HVITにおける原則や概念
-        assign[14] = 13    # 従うべき原則（個別）
-        assign[15] = 34    # サービス価値の確認
-        assign[16] = 12    # サービスバリューチェーン活動
-        assign[17] = 21    # SVS導入における課題
-        if amount == 60:
-            assign[18] = 24                           # 実現(DSV)
-            assign[19] = 23                           # バリューストリーム（新サービス）
-            assign[20] = 14                           # ４つの側面
-            assign[21] = 24                           # コントロール(DPI)
-            assign[22] = 22                           # SVS導入におけるリソース管理
-            assign[23] = 13                           # HVITにおける原則や概念を支える行動
-            assign[24] = 11                           # カスタマジャニー
-            assign[25] = 21                           # SVS導入における課題
-            assign[26] = 22                           # リスク管理(DPI)
-            assign[27] = 12                           # DXに求められる環境と能力
-            assign[28] = 13                           # 従うべき原則（全体）
-            assign[29] = 24                           # バリューストリーム（ユーザ・サポート）
-            assign[30] = 22                           # HVITにおける原則や概念
-            assign[31] = 23                           # コミュニケーションの原則
-            assign[32] = 11                           # コントロールの範囲の特定
-            assign[33] = 14                           # オン/オフ・ボーディング
-            assign[34] = 11                           # サービスバリューシステム
-            assign[35] = 22                           # 関係タイプ
-            assign[36] = 14                           # HVITとITILの関係
-            assign[37] = 23                           # バリューストリーム（新サービス）
-            assign[38] = 13                           # HVITにおける原則や概念を支える行動
-            assign[39] = 21                           # オン/オフ・ボーディング
-            assign[40] = 12                           # ユーザ・コミュニティ　& フィードバック管理
-            assign[41] = 24                           # キューとバックログの管理
-            assign[42] = 13                           # ガバナンス
-            assign[43] = 12                           # HVITにおける原則や概念を支える行動
-            assign[44] = 32                           # エンゲージメント or 提案
-            assign[45] = 11                           # サービス関係
-            assign[46] = 23                           # 組織変更の管理
-            assign[47] = 21                           # デジタル商品の５つの目標
-            assign[48] = 14                           # ユーザ・コミュニティ　& フィードバック管理
-            assign[49] = 21                           # キューとバックログの管理
-            assign[50] = 22                           # ガバナンス
-            assign[51] = 23                           # HVITにおける原則や概念を支える行動
-            assign[52] = 24                           # エンゲージメント or 提案
-            assign[53] = 11                           # サービス関係
-            assign[54] = 12                           # 組織変更の管理
-            assign[55] = 13                           # デジタル商品の５つの目標
-            assign[56] = 14                           # ユーザ・コミュニティ　& フィードバック管理
-            assign[57] = 21                           # キューとバックログの管理
-            assign[58] = 22                           # ガバナンス
-            assign[59] = 23                           # HVITにおける原則や概念を支える行動
+        assign[0] = 34    # ＩＴ利活用プロセス
+        assign[1] = 33    # ＩＴ戦略プロセス
+        assign[2] = 22 + random.randint(0, 1)    # 変革マネジメント / 持続的成長認識
+        assign[3] = 13    # ＩＴ経営の推進方法
+        assign[4] = 51    # 基本知識
+        assign[5] = 31    # 経営戦略プロセス
+        assign[6] = 42 + random.randint(0, 1)    # ＩＴ経営共通
+        assign[7] = 21    # 変革認識プロセス
+        assign[8] = 32    # 業務改革プロセス
+        assign[9] = 41    # プロジェクトマネジメント
+        if amount == 100:
+            assign[10] = 34  # ＩＴ利活用プロセス
+            assign[11] = 51  # 基本知識
+            assign[12] = 34  # ＩＴ利活用プロセス
+            assign[13] = 31  # 経営戦略プロセス
+            assign[14] = 43  # コミュニケーション
+            assign[15] = 34  # ＩＴ利活用プロセス
+            assign[16] = 42 + random.randint(0, 1)    # ＩＴ経営共通
+            assign[17] = 32  # 業務改革プロセス
+            assign[18] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[19] = 41  # プロジェクトマネジメント
+            assign[20] = 34  # ＩＴ利活用プロセス
+            assign[21] = 52  # ＩＴ経営推進プロセスガイドライン
+            assign[22] = 51  # 基本知識
+            assign[23] = 33  # ＩＴ戦略プロセス
+            assign[24] = 43  # コミュニケーション
+            assign[25] = 34  # ＩＴ利活用プロセス
+            assign[26] = 32  # 業務改革プロセス
+            assign[27] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[28] = 33  # ＩＴ戦略プロセス
+            assign[29] = 41  # プロジェクトマネジメント
+            assign[30] = 22 + random.randint(0, 1)    # 変革マネジメント / 持続的成長認識
+            assign[31] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[32] = 31  # 経営戦略プロセス
+            assign[33] = 51  # 基本知識
+            assign[34] = 33  # ＩＴ戦略プロセス
+            assign[35] = 51  # 基本知識
+            assign[36] = 34  # ＩＴ利活用プロセス
+            assign[37] = 43  # コミュニケーション
+            assign[38] = 33  # ＩＴ戦略プロセス
+            assign[39] = 21  # 変革認識プロセス
+            assign[40] = 32  # 業務改革プロセス
+            assign[41] = 34  # ＩＴ利活用プロセス
+            assign[42] = 35  # ＩＴ経営実現
+            assign[43] = 11 + random.randint(0, 1)  # ＩＴ経営を支える人財と役割
+            assign[44] = 32  # 業務改革プロセス
+            assign[45] = 33  # ＩＴ戦略プロセス
+            assign[46] = 23  # 持続的成長認識プロセス
+            assign[47] = 31  # 経営戦略プロセス
+            assign[48] = 34  # ＩＴ利活用プロセス
+            assign[49] = 34  # ＩＴ利活用プロセス
+            assign[50] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[51] = 31  # 経営戦略プロセス
+            assign[52] = 32  # 業務改革プロセス
+            assign[53] = 21  # 変革認識プロセス
+            assign[54] = 43  # コミュニケーション
+            assign[55] = 33  # ＩＴ戦略プロセス
+            assign[56] = 34  # ＩＴ利活用プロセス
+            assign[57] = 31  # 経営戦略プロセス
+            assign[58] = 41  # プロジェクトマネジメント
+            assign[59] = 33  # ＩＴ戦略プロセス
+            assign[60] = 34  # ＩＴ利活用プロセス
+            assign[61] = 51  # 基本知識
+            assign[62] = 41  # プロジェクトマネジメント
+            assign[63] = 33  # ＩＴ戦略プロセス
+            assign[64] = 13  # ＩＴ経営の推進方法
+            assign[65] = 34  # ＩＴ利活用プロセス
+            assign[66] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[67] = 32  # 業務改革プロセス
+            assign[68] = 34  # ＩＴ利活用プロセス
+            assign[69] = 41  # プロジェクトマネジメント
+            assign[70] = 43  # コミュニケーション
+            assign[71] = 33  # ＩＴ戦略プロセス
+            assign[72] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[73] = 34  # ＩＴ利活用プロセス
+            assign[74] = 31  # 経営戦略プロセス
+            assign[75] = 33  # ＩＴ戦略プロセス
+            assign[76] = 34  # ＩＴ利活用プロセス
+            assign[77] = 51  # 基本知識
+            assign[78] = 32  # 業務改革プロセス
+            assign[79] = 21  # 変革認識プロセス
+            assign[80] = 33  # ＩＴ戦略プロセス
+            assign[81] = 43  # コミュニケーション
+            assign[82] = 34  # ＩＴ利活用プロセス
+            assign[83] = 41  # プロジェクトマネジメント
+            assign[84] = 32  # 業務改革プロセス
+            assign[85] = 33  # ＩＴ戦略プロセス
+            assign[86] = 53  # 持続的成長とは
+            assign[87] = 21  # 変革認識プロセス
+            assign[88] = 34  # ＩＴ利活用プロセス
+            assign[89] = 31  # 経営戦略プロセス
+            assign[90] = 41  # プロジェクトマネジメント
+            assign[91] = 33  # ＩＴ戦略プロセス
+            assign[92] = 43  # コミュニケーション
+            assign[93] = 31  # 経営戦略プロセス
+            assign[94] = 34  # ＩＴ利活用プロセス
+            assign[95] = 42  # モニタリング&コントロール(Ｃ2)
+            assign[96] = 34  # ＩＴ利活用プロセス
+            assign[97] = 31  # 経営戦略プロセス
+            assign[98] = 32  # 業務改革プロセス
+            assign[99] = 33  # ＩＴ戦略プロセス
     else:
         print("Error!")
         return -1
