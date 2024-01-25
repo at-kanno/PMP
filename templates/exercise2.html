@@ -86,20 +86,17 @@
     <input type="hidden" name="num" value={{ num }} />
     <input type="hidden" name="permutation" value={{ permutation }} />
 
-<p style="margin:left">
-    問題:  {{ question | safe }} <br><br>
-    <input type="radio" name="selection" value="1" {{ selectStr[0] }} onclick="parent.setActive({{ q_no }})"
-    /> A. {{ selection1 }}  <br>
-
-    <input type="radio" name="selection" value="2" {{ selectStr[1] }} onclick="parent.setActive({{ q_no }})"
-    /> B. {{ selection2 }} <br>
-
-    <input type="radio" name="selection" value="3" {{ selectStr[2] }} onclick="parent.setActive({{ q_no }})"
-    /> C. {{ selection3 }} <br>
-
-    <input type="radio" name="selection" value="4" {{ selectStr[3] }} onclick="parent.setActive({{ q_no }})"
-    /> D. {{ selection4 }} <br><br>
-</p>
+<br><TABLE style="margin:0;padding=0">
+    <TR><TD width="40">問題</TD><TD width="20">:</TD><TD>{{ question | safe }}</TD></TR>
+<TR><TD><input type="radio" name="selection" value="1" {{ selectStr[0] }} onclick="parent.setActive({{ q_no }})"
+    /></TD><TD>A.</TD><TD>{{ selection1 }}</TD></TR>
+<TR><TD><input type="radio" name="selection" value="2" {{ selectStr[1] }} onclick="parent.setActive({{ q_no }})"
+    /></TD><TD>B.</TD><TD>{{ selection2 }}</TD></TR>
+<TR><TD><input type="radio" name="selection" value="3" {{ selectStr[2] }} onclick="parent.setActive({{ q_no }})"
+    /></TD><TD>C.</TD><TD>{{ selection3 }}</TD></TR>
+<TR><TD><input type="radio" name="selection" value="4" {{ selectStr[3] }} onclick="parent.setActive({{ q_no }})"
+    /></TD><TD>D.</TD><TD>{{ selection4 }}</TD></TR>
+</TABLE><BR>
 
 	<input type="button" value="解答を見る" onClick="setAndGo('check',0)"
            style="color:white;background:#d13415;width:150px;cursor:pointer;border:1px solid;margin:5px;padding:10px;"/>
